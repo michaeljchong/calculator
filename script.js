@@ -26,3 +26,4 @@ const operate = function(operator, num1, num2) {
       return divide(num1, num2);
   };
 };
+

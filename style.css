@@ -1,0 +1,49 @@
+html, body {
+  height: 100%;
+  width: 100%;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: x-large;
+  font-family: monospace;
+}
+
+header {
+  text-align: center;
+}
+
+main {
+  display: grid;
+  grid-template-columns: 3fr 1fr;
+  grid-template-rows: 1fr 5fr;
+  justify-content: space-evenly;
+  align-content: space-evenly;
+}
+
+#display {
+  border: inset;
+  text-align: right;
+  grid-column: 1 / span 2;
+}
+
+#numbers {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+#zero {
+  grid-column: 1 / span 2;
+}
+
+#operators {
+  display: flex;
+  flex-direction: column;
+}
+
+.number, .operator {
+  padding: 10px;
+}
