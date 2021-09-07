@@ -2,7 +2,7 @@ const display = document.querySelector('#display');
 let currentValue = 0;
 let lastValue = 0;
 let currentOperator = null;
-// const decimalPt = document.querySelector('#point');
+const decimalPt = document.querySelector('#point');
 
 const add = function(num1, num2) {
   return parseFloat(num1) + parseFloat(num2);
@@ -34,10 +34,10 @@ const operate = function(operator, num1, num2) {
 };
 
 const displayNum = function(num) {
-/*   if (num.target.textContent === '.') {
+  if (num.target.textContent === '.') {
      if (decimalPt.disabled) return;
      decimalPt.disabled = true;
-  } */
+  }
 
   currentValue = (currentValue === 0) ?
     num.target.textContent : currentValue + num.target.textContent;
