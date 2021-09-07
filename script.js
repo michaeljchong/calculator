@@ -1,3 +1,4 @@
+const display = document.querySelector('#display');
 let currentValue = 0;
 let lastValue = 0;
 let currentOperator = null;
@@ -31,54 +32,47 @@ const operate = function(operator, num1, num2) {
   };
 };
 
-function display() {
-  const display = document.querySelector('#display');
+function numberButtons() {
   const nums = document.querySelectorAll('.number');
   nums.forEach(num => {
     num.addEventListener('click', () => {
-      currentValue = (currentValue === 0) ? num.textContent : currentValue + num.textContent;
+      currentValue = (currentValue === 0) ? 
+                      num.textContent : currentValue + num.textContent;
       display.textContent = currentValue;
     });
   });
+}
 
+function operatorButtons() {
   const operators = document.querySelectorAll('.operator');
   operators.forEach(operator => {
-    operator.addEventListener('click', function(e) {
-      switch(e.target.id) {
+    operator.addEventListener('click', () => {
+      switch (operator.id) {
         case 'clear':
           currentValue = 0;
           lastValue = 0;
           currentOperator = null;
           display.textContent = 0;
           break;
-        case 'divide':
-          lastValue = currentValue;
-          currentValue = 0;
-          currentOperator = '/';
-          break;
-        case 'multiply':
-          lastValue = currentValue;
-          currentValue = 0;
-          currentOperator = 'x';
-          break;
-        case 'subtract':
-          lastValue = currentValue;
-          currentValue = 0;
-          currentOperator = '-';
-          break;
-        case 'add':
-          lastValue = currentValue;
-          currentValue = 0;
-          currentOperator = '+';
-          break;
         case 'equal':
-          lastValue = operate(currentOperator, lastValue, currentValue);
-          currentValue = lastValue;
-          display.textContent = lastValue;
+          let result = operate(currentOperator, lastValue, currentValue);
+          currentValue = result;
+          display.textContent = result;
+          break;
+        default:
+          if (currentOperator) {
+            let result = operate(currentOperator, lastValue, currentValue);
+            currentValue = result;
+            display.textContent = result;
+          }
+          lastValue = currentValue;
+          currentValue = 0;
+          currentOperator = operator.textContent;
           break;
       }
     });
   });
 }
 
-display();
+numberButtons();
+operatorButtons();
