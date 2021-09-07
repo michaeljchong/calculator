@@ -46,9 +46,7 @@ const displayNum = function(num) {
 
 const equate = function() {
   if (!currentOperator) return;
-  let tempValue = currentValue;
   currentValue = operate(currentOperator, lastValue, currentValue);
-  lastValue = tempValue;
   display.textContent = currentValue;
 }
 
@@ -58,19 +56,18 @@ const compute = function(operator) {
       currentValue = 0;
       lastValue = 0;
       currentOperator = null;
-      //decimalPt.disabled = false;
+      decimalPt.disabled = false;
       display.textContent = 0;
       break;
     case 'equal':
       equate()
-      //decimalPt.disabled = false;
       break;
     default:
       if (currentOperator) equate();
       lastValue = currentValue;
       currentValue = 0;
       currentOperator = operator.target.textContent;
-      //decimalPt.disabled = false;
+      decimalPt.disabled = false;
       break;
   }
 }
