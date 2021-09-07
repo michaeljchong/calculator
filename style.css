@@ -16,18 +16,23 @@ header {
   text-align: center;
 }
 
-main {
+#calculator {
   display: grid;
   grid-template-columns: 3fr 1fr;
-  grid-template-rows: 1fr 5fr;
+  grid-template-rows: 1fr 6fr;
   justify-content: space-evenly;
   align-content: space-evenly;
+  border: 5px outset;
+  border-radius: 20px;
+  width: 30%;
+  padding: 20px;
 }
 
 #display {
   border: inset;
   text-align: right;
   grid-column: 1 / span 2;
+  padding: 5px;
 }
 
 #numbers {
