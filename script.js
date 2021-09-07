@@ -2,6 +2,7 @@ const display = document.querySelector('#display');
 let currentValue = 0;
 let lastValue = 0;
 let currentOperator = null;
+// const decimalPt = document.querySelector('#point');
 
 const add = function(num1, num2) {
   return parseFloat(num1) + parseFloat(num2);
@@ -32,47 +33,62 @@ const operate = function(operator, num1, num2) {
   };
 };
 
-function numberButtons() {
+const displayNum = function(num) {
+/*   if (num.target.textContent === '.') {
+     if (decimalPt.disabled) return;
+     decimalPt.disabled = true;
+  } */
+
+  currentValue = (currentValue === 0) ?
+    num.target.textContent : currentValue + num.target.textContent;
+  display.textContent = currentValue;
+}
+
+const equate = function() {
+  if (!currentOperator) return;
+  let tempValue = currentValue;
+  currentValue = operate(currentOperator, lastValue, currentValue);
+  lastValue = tempValue;
+  display.textContent = currentValue;
+}
+
+const compute = function(operator) {
+  switch (operator.target.id) {
+    case 'clear':
+      currentValue = 0;
+      lastValue = 0;
+      currentOperator = null;
+      //decimalPt.disabled = false;
+      display.textContent = 0;
+      break;
+    case 'equal':
+      equate()
+      //decimalPt.disabled = false;
+      break;
+    default:
+      if (currentOperator) equate();
+      lastValue = currentValue;
+      currentValue = 0;
+      currentOperator = operator.target.textContent;
+      //decimalPt.disabled = false;
+      break;
+  }
+}
+
+function calculator() {
   const nums = document.querySelectorAll('.number');
   nums.forEach(num => {
-    num.addEventListener('click', () => {
-      currentValue = (currentValue === 0) ? 
-                      num.textContent : currentValue + num.textContent;
-      display.textContent = currentValue;
-    });
+    num.addEventListener('click', displayNum);
   });
-}
 
-function operatorButtons() {
   const operators = document.querySelectorAll('.operator');
   operators.forEach(operator => {
-    operator.addEventListener('click', () => {
-      switch (operator.id) {
-        case 'clear':
-          currentValue = 0;
-          lastValue = 0;
-          currentOperator = null;
-          display.textContent = 0;
-          break;
-        case 'equal':
-          let result = operate(currentOperator, lastValue, currentValue);
-          currentValue = result;
-          display.textContent = result;
-          break;
-        default:
-          if (currentOperator) {
-            let result = operate(currentOperator, lastValue, currentValue);
-            currentValue = result;
-            display.textContent = result;
-          }
-          lastValue = currentValue;
-          currentValue = 0;
-          currentOperator = operator.textContent;
-          break;
-      }
-    });
+    operator.addEventListener('click', compute);
   });
 }
 
-numberButtons();
-operatorButtons();
+calculator();
+
+// division by 0 should result in an error message
+// equals has issues when operators and numbers not registered before hand
+// decimal point should be limited to one use
