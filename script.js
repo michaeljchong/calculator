@@ -41,6 +41,7 @@ const operate = function(operator, num1, num2) {
 };
 
 const displayNum = function(num) {
+  removeIndicator();
   if (values.currentOperator === '=') clear();
 
   if (values.current && values.current.toString().includes('.')) {
@@ -90,7 +91,19 @@ const checkAndCompute = function() {
   };
 };
 
+const removeIndicator = function() {
+  const operators = document.querySelectorAll('.operator');
+  operators.forEach(operator => {
+    operator.classList.remove('indicateOperator')
+  });
+};
+
+const indicateOperator = function(operator) {
+  operator.target.classList.add('indicateOperator');
+};
+
 const useOperator = function(operator) {
+  removeIndicator();
   switch (operator.target.id) {
     case 'clear':
       clear();
@@ -103,7 +116,7 @@ const useOperator = function(operator) {
       backspace();
       break;
     default:
-      // operator.target.classList.add('selectedOperator');
+      indicateOperator(operator);
       checkAndCompute();
       values.previous = values.current || values.previous;
       values.current = null;
@@ -128,4 +141,5 @@ operators.forEach(operator => {
 - limit input to display window size
 - change larger numbers into exponential
 - hitting equals repetitively repeats the previous operation
+- 
 */
