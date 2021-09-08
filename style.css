@@ -9,6 +9,7 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  margin: 0;
   color: white;
 }
 
@@ -19,14 +20,14 @@ header {
 }
 
 #calculator {
+  display: flex;
+  flex-direction: column;
   height: 320px;
-  width: 280px;
+  width: 320px;
   border: outset gray;
   border-radius: 50px;
   padding: 30px 20px;
   font-family: Arial;
-  display: flex;
-  flex-direction: column;
 }
 
 #display {
