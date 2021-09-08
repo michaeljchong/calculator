@@ -164,10 +164,3 @@ function keyInput(e) {
   if (num) displayNum(num);
   if (operator) useOperator(operator);
 }
-
-/* TO DO
-- limit input to display window size
-- change larger numbers into exponential
-- hitting equals repetitively repeats the previous operation
-- show brief animation on non-operator buttons
-*/
