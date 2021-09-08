@@ -37,7 +37,7 @@ const operate = function(operator, num1, num2) {
       return round(multiply(num1, num2));
     case '/':
       return round(divide(num1, num2));
-  };
+  }
 };
 
 const displayNum = function(num) {
@@ -73,7 +73,7 @@ const invert = function() {
   } else if (values.currentOperator === '=') {
     values.current = -1 * values.previous;
     display.textContent = values.current;
-  };
+  }
 };
 
 const backspace = function() {
@@ -81,7 +81,7 @@ const backspace = function() {
     const decimalPtCheck = values.current.toString().slice(-2, -1);
     if (decimalPtCheck === '.') decimalPt.disabled = false;
     values.current = values.current.toString().slice(0, -1);
-  };
+  }
   display.textContent =
       (values.current === '' || values.current === null) ? 0 : values.current;
 };
@@ -90,7 +90,7 @@ const checkDivisionByZero = function () {
   if (values.currentOperator === '/' && values.current === '0') {
     clear();
     display.textContent = 'Error - Cannot divide by zero';
-  };
+  }
 }
 
 const checkAndCompute = function() {
@@ -99,7 +99,7 @@ const checkAndCompute = function() {
   if (values.currentOperator && values.current && values.previous) {
     values.current = operate(values.currentOperator, values.previous, values.current);
     display.textContent = values.current;
-  };
+  }
 };
 
 const removeIndicator = function() {
@@ -133,7 +133,7 @@ const useOperator = function(operator) {
       values.currentOperator = operator.textContent;
       decimalPt.disabled = false;
       break;
-  };
+  }
 };
 
 const nums = document.querySelectorAll('.number');
