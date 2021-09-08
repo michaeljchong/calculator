@@ -41,14 +41,16 @@ const operate = function(operator, num1, num2) {
 };
 
 const displayNum = function(num) {
+  if (values.currentOperator === '=') clear();
+
   if (values.current && values.current.toString().includes('.')) {
     decimalPt.disabled = true;
     if (num.target.id === 'point') return;
   }
 
   values.current = (!values.current) ?
-          num.target.textContent :
-          values.current + num.target.textContent;
+      num.target.textContent :
+      values.current + num.target.textContent;
   display.textContent = values.current;
   document.querySelector('#clear').textContent = 'C';
 };
@@ -64,32 +66,29 @@ const clear = function() {
 
 const backspace = function() {
   if (values.current) {
-    if (values.current.toString().includes('.')) {
-      decimalPt.disabled = false;
-    }
+    const decimalPtCheck = values.current.toString().slice(-2, -1);
+    if (decimalPtCheck === '.') decimalPt.disabled = false;
     values.current = values.current.toString().slice(0, -1);
   };
   display.textContent =
-    (values.current === '' || values.current === null) ?
-      0 : values.current;
+      (values.current === '' || values.current === null) ? 0 : values.current;
 };
 
-const equate = function() {
-  if (values.currentOperator && values.current && values.previous) {
-    values.current = operate(
-            values.currentOperator,
-            values.previous,
-            values.current);
-    display.textContent = values.current;
-  };
-};
-
-const divisionByZero = function() {
+const checkDivisionByZero = function () {
   if (values.currentOperator === '/' && values.current === '0') {
     clear();
     display.textContent = 'Error - Cannot divide by zero';
   };
 }
+
+const checkAndCompute = function() {
+  checkDivisionByZero();
+  if (values.currentOperator === '=') return;
+  if (values.currentOperator && values.current && values.previous) {
+    values.current = operate(values.currentOperator, values.previous, values.current);
+    display.textContent = values.current;
+  };
+};
 
 const useOperator = function(operator) {
   switch (operator.target.id) {
@@ -103,16 +102,10 @@ const useOperator = function(operator) {
     case 'backspace':
       backspace();
       break;
-    case 'equal':
-      divisionByZero();
-      equate();
-      values.currentOperator = null;
-      break;
     default:
       // operator.target.classList.add('selectedOperator');
-      divisionByZero();
-      if (values.currentOperator) equate();
-      values.previous = values.current;
+      checkAndCompute();
+      values.previous = values.current || values.previous;
       values.current = null;
       values.currentOperator = operator.target.textContent;
       decimalPt.disabled = false;
@@ -131,7 +124,8 @@ operators.forEach(operator => {
 });
 
 /* TO DO
-- input after hitting equals should clear and start a new computation sequence, 
-    operator after equals should continue the current sequence
 - selected operator changes color while in use
+- limit input to display window size
+- change larger numbers into exponential
+- hitting equals repetitively repeats the previous operation
 */
