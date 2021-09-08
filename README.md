@@ -23,6 +23,7 @@
     <li>Div</li>
     <li>ID's and classes</li>
     <li>Buttons</li>
+    <li>Data attributes</li>
 </ul>
 
 <h2>CSS used:</h2>
