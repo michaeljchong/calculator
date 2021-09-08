@@ -41,17 +41,18 @@ const operate = function(operator, num1, num2) {
 };
 
 const displayNum = function(num) {
+  console.log(num);
   removeIndicator();
   if (values.currentOperator === '=') clear();
 
   if (values.current && values.current.toString().includes('.')) {
     decimalPt.disabled = true;
-    if (num.target.id === 'point') return;
+    if (num.id === 'point') return;
   }
 
   values.current = (!values.current) ?
-      num.target.textContent :
-      values.current + num.target.textContent;
+      num.textContent :
+      values.current + num.textContent;
   display.textContent = values.current;
   document.querySelector('#clear').textContent = 'C';
 };
@@ -99,28 +100,30 @@ const removeIndicator = function() {
 };
 
 const indicateOperator = function(operator) {
-  operator.target.classList.add('indicateOperator');
+  operator.classList.add('indicateOperator');
 };
 
 const useOperator = function(operator) {
   removeIndicator();
-  switch (operator.target.id) {
+  switch (operator.id) {
     case 'clear':
       clear();
       break;
     case 'negative':
-      if (values.current) values.current *= -1;
-      display.textContent = values.current;
+      if (values.current && values.current !== '.') {
+        values.current *= -1;
+        display.textContent = values.current;
+      }
       break;
     case 'backspace':
       backspace();
       break;
     default:
-      if (operator.target.id !== 'equal') indicateOperator(operator);
+      if (operator.id !== 'equal') indicateOperator(operator);
       checkAndCompute();
       values.previous = values.current || values.previous;
       values.current = null;
-      values.currentOperator = operator.target.textContent;
+      values.currentOperator = operator.textContent;
       decimalPt.disabled = false;
       break;
   };
@@ -128,16 +131,28 @@ const useOperator = function(operator) {
 
 const nums = document.querySelectorAll('.number');
 nums.forEach(num => {
-  num.addEventListener('click', displayNum);
+  num.addEventListener('click', () => {
+    displayNum(num);
+  });
 });
 
 const operators = document.querySelectorAll('.operator');
 operators.forEach(operator => {
-  operator.addEventListener('click', useOperator);
+  operator.addEventListener('click', () => {
+    useOperator(operator);
+  });
 });
 
+window.addEventListener('keydown', keyInput);
+
+function keyInput(e) {
+  const num = document.querySelector(`.number[data-key="${e.keyCode}"]`);
+  const operator = document.querySelector(`.operator[data-key="${e.keyCode}"]`);
+  if (num) displayNum(num);
+  if (operator) useOperator(operator);
+}
+
 /* TO DO
-- selected operator changes color while in use
 - limit input to display window size
 - change larger numbers into exponential
 - hitting equals repetitively repeats the previous operation
