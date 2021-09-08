@@ -145,7 +145,13 @@ operators.forEach(operator => {
 
 window.addEventListener('keydown', keyInput);
 
+let lastKey = null;
 function keyInput(e) {
+  if (lastKey === 16 && e.keyCode === 187) {
+    const operator = document.querySelector('#add');
+    if (operator) useOperator(operator);
+  }
+  lastKey = e.keyCode;
   const num = document.querySelector(`.number[data-key="${e.keyCode}"]`);
   const operator = document.querySelector(`.operator[data-key="${e.keyCode}"]`);
   if (num) displayNum(num);
