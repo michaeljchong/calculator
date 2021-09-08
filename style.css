@@ -61,7 +61,7 @@ button {
   background-color: rgb(255, 203, 106);
 }
 
-#clear, #negative, #delete {
+#clear, #negative, #backspace {
   background-color: rgb(196, 196, 196);
   color: black;
 }
