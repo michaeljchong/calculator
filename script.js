@@ -1,8 +1,10 @@
 const display = document.querySelector('#display');
-let currentValue = 0;
-let lastValue = 0;
-let currentOperator = null;
 const decimalPt = document.querySelector('#point');
+const values = {
+      current: null,
+      previous: null,
+      currentOperator: null
+};
 
 const add = function(num1, num2) {
   return parseFloat(num1) + parseFloat(num2);
@@ -20,57 +22,85 @@ const divide = function(num1, num2) {
   return num1 / num2;
 };
 
+const round = function(num) {
+  const precision = 1000000
+  return Math.round(num * precision) / precision;
+};
+
 const operate = function(operator, num1, num2) {
   switch(operator) {
     case '+':
-      return add(num1, num2);
+      return round(add(num1, num2));
     case '-':
-      return subtract(num1, num2);
+      return round(subtract(num1, num2));
     case 'x':
-      return multiply(num1, num2);
+      return round(multiply(num1, num2));
     case '/':
-      return divide(num1, num2);
+      return round(divide(num1, num2));
   };
 };
 
 const displayNum = function(num) {
-  if (num.target.textContent === '.') {
-     if (decimalPt.disabled) return;
-     decimalPt.disabled = true;
+  if (values.current && values.current.toString().includes('.')) {
+    decimalPt.disabled = true;
+    console.log('deci');
+    if (num.target.id === 'point') return;
   }
 
-  currentValue = (currentValue === 0) ?
-    num.target.textContent : currentValue + num.target.textContent;
-  display.textContent = currentValue;
-}
+  values.current = (!values.current) ?
+                  num.target.textContent :
+                  values.current + num.target.textContent;
+  display.textContent = values.current;
+  document.querySelector('#clear').textContent = 'C';
+};
 
 const equate = function() {
-  if (!currentOperator) return;
-  currentValue = operate(currentOperator, lastValue, currentValue);
-  display.textContent = currentValue;
-}
+  if (values.currentOperator && values.current && values.previous) {
+    values.current = operate(
+                      values.currentOperator,
+                      values.previous,
+                      values.current);
+    display.textContent = values.current;
+  };
+};
 
-const compute = function(operator) {
+const useOperator = function(operator) {
   switch (operator.target.id) {
     case 'clear':
-      currentValue = 0;
-      lastValue = 0;
-      currentOperator = null;
-      decimalPt.disabled = false;
+      values.current = null;
+      values.previous = null;
+      values.currentOperator = null;
       display.textContent = 0;
+      decimalPt.disabled = false;
+      document.querySelector('#clear').textContent = 'AC';
+      break;
+    case 'negative':
+      if (values.current) values.current *= -1;
+      display.textContent = values.current;
+      break;
+    case 'delete':
+      if (values.current) {
+        if (values.current.toString().includes('.')) decimalPt.disabled = false;
+        values.current = values.current.toString().slice(0, -1);
+      }
+      display.textContent = (values.current === '' || values.current === null) ?
+                            0 : values.current;
       break;
     case 'equal':
       equate()
+      values.currentOperator = null;
       break;
     default:
-      if (currentOperator) equate();
-      lastValue = currentValue;
-      currentValue = 0;
-      currentOperator = operator.target.textContent;
+      // operator.target.classList.add('selectedOperator');
+      if (values.currentOperator) equate();
+      values.previous = values.current;
+      values.current = null;
+      values.currentOperator = operator.target.textContent;
       decimalPt.disabled = false;
+      console.log('oper');
       break;
-  }
-}
+  };
+};
 
 function calculator() {
   const nums = document.querySelectorAll('.number');
@@ -80,12 +110,15 @@ function calculator() {
 
   const operators = document.querySelectorAll('.operator');
   operators.forEach(operator => {
-    operator.addEventListener('click', compute);
+    operator.addEventListener('click', useOperator);
   });
-}
+};
 
 calculator();
 
-// division by 0 should result in an error message
-// equals has issues when operators and numbers not registered before hand
-// decimal point should be limited to one use
+/* TO DO
+- division by 0 should result in an error message
+- input after hitting equals should clear and start a new computation sequence, 
+    operator after equals should continue the current sequence
+- selected operator changes color while in use
+*/

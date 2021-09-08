@@ -1,60 +1,51 @@
-html{
+html, body{
   height: 100%;
   width: 100%;
   background-color: rgb(0, 0, 0);
-  color: white;
 }
 
 body {
-  height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  font-size: x-large;
-  font-family: monospace;
+  font-size: 20px;
+  color: white;
 }
 
 header {
+  font-family: monospace;
   text-align: center;
 }
 
 #calculator {
-  display: grid;
-  grid-template-columns: 3fr 1fr;
-  grid-template-rows: 1fr 6fr;
-  justify-content: space-evenly;
-  align-content: space-evenly;
-  border-radius: 20px;
-  width: 28%;
-  padding: 20px;
+  font-family: Arial;
+  display: flex;
+  flex-direction: column;
+  width: 280px;
+  height: 320px;
 }
 
 #display {
   text-align: right;
-  grid-column: 1 / span 2;
-  padding: 5px;
+  margin: 10px;
 }
 
-#numbers {
+#buttons {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
 }
 
 #zero {
   grid-column: 1 / span 2;
 }
 
-#operators {
-  display: flex;
-  flex-direction: column;
-}
-
 button {
   padding: 10px;
   border: none;
-  margin: 5px;
+  margin: 4px;
   border-radius: 50px;
+  font-size: 20px;
   color: white;
 }
 
@@ -64,4 +55,13 @@ button {
 
 .operator {
   background-color: orange;
+}
+
+.selectedOperator {
+  background-color: rgb(255, 203, 106);
+}
+
+#clear, #negative, #delete {
+  background-color: rgb(196, 196, 196);
+  color: black;
 }
