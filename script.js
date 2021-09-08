@@ -41,7 +41,6 @@ const operate = function(operator, num1, num2) {
 };
 
 const displayNum = function(num) {
-  console.log(num);
   removeIndicator();
   if (values.currentOperator === '=') clear();
 
@@ -64,6 +63,17 @@ const clear = function() {
   display.textContent = 0;
   decimalPt.disabled = false;
   document.querySelector('#clear').textContent = 'AC';
+};
+
+const invert = function() {
+  if (values.current) {
+    if (values.current === '.') return;
+    values.current *= -1;
+    display.textContent = values.current;
+  } else if (values.currentOperator === '=') {
+    values.current = -1 * values.previous;
+    display.textContent = values.current;
+  };
 };
 
 const backspace = function() {
@@ -110,10 +120,7 @@ const useOperator = function(operator) {
       clear();
       break;
     case 'negative':
-      if (values.current && values.current !== '.') {
-        values.current *= -1;
-        display.textContent = values.current;
-      }
+      invert();
       break;
     case 'backspace':
       backspace();
