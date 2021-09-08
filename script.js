@@ -116,7 +116,7 @@ const useOperator = function(operator) {
       backspace();
       break;
     default:
-      indicateOperator(operator);
+      if (operator.target.id !== 'equal') indicateOperator(operator);
       checkAndCompute();
       values.previous = values.current || values.previous;
       values.current = null;
@@ -141,5 +141,5 @@ operators.forEach(operator => {
 - limit input to display window size
 - change larger numbers into exponential
 - hitting equals repetitively repeats the previous operation
-- 
+- show brief animation on non-operator buttons
 */
